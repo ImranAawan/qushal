@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Tours - Qushal tours and travels</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Font (Poppins) - UPDATED -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Config for plugins and custom effects -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    textShadow: {
+                        'glow-cyan': '0 0 12px rgba(14, 165, 233, 0.5)',
+                        'glow-cyan-lg': '0 0 20px rgba(14, 165, 233, 0.7)',
+                    },
+                },
+            },
+            // FIXED: Removed broken plugins section that caused blank page
+        }
+    </script>
+
+    <style>
+        /* Base font - UPDATED */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Hero image dimming */
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Using a gradient for a more professional fade */
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+        }
+
+        /* Scroll-in animation */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styles for desktop dropdown */
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        .group:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+
+        /* Header Scroll Effect */
+        #main-header {
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        /* Initial state (on hero) */
+        #main-header.at-top {
+            background-color: transparent;
+            color: #ffffff; /* White text */
+        }
+        #main-header.at-top .nav-link {
+            color: #E5E7EB; /* light gray */
+        }
+        #main-header.at-top .nav-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.7);
+        }
+        #main-header.at-top .logo-text {
+            color: #ffffff;
+        }
+         #main-header.at-top .logo-svg {
+            fill: #ffffff;
+        }
+        #main-header.at-top #mobile-menu-button {
+            color: #E5E7EB;
+        }
+
+        /* Scrolled state */
+        #main-header.scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+            color: #1f2937; /* Dark text */
+        }
+        #main-header.scrolled .nav-link {
+            color: #4b5563; /* medium-gray */
+        }
+        #main-header.scrolled .nav-link:hover {
+            color: #0e7490; /* cyan-700 */
+        }
+        #main-header.scrolled .logo-text {
+            color: #0e7490; /* cyan-700 */
+        }
+        #main-header.scrolled .logo-svg {
+            fill: #0e7490; /* cyan-700 */
+        }
+        #main-header.scrolled #mobile-menu-button {
+            color: #4b5563;
+        }
+        /* Scrolled state for dropdown */
+        #main-header.scrolled .dropdown-menu {
+            background-color: #ffffff;
+            color: #4b5563;
+        }
+        /* Top state for dropdown */
+         #main-header.at-top .dropdown-menu {
+            background-color: rgba(31, 41, 55, 0.8); /* bg-gray-800/80 */
+            backdrop-filter: blur(8px);
+            color: #E5E7EB;
+        }
+        
+        /* Custom scrollbar for sliders */
+        .slider-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+        .slider-wrapper::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        .slider-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-800 antialiased">
+
+    <!-- ========== HEADER ========== -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 at-top">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-18 py-3">
+                <!-- Logo - UPDATED -->
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2" aria-label="Qushal Tours Homepage">
+                    <!-- NEW: Q with Eagle and Plane SVG Logo -->
+                    <svg class="logo-svg transition-colors duration-300" width="32" height="32" viewBox="0 0 64 64" fill="#0E7490" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32,4 C16.5,4 4,16.5 4,32 C4,47.5 16.5,60 32,60 C47.5,60 60,47.5 60,32 C60,16.5 47.5,4 32,4 Z M32,52 C21,52 12,43 12,32 C12,21 21,12 32,12 C43,12 52,21 52,32 C52,43 43,52 32,52 Z" />
+                        <path d="M45.5,45.5 L58,58 L62,54 L52,48 L48,42 L45.5,45.5 Z" />
+                        <path d="M22,48 C24,44 28,42 32,42 C36,42 40,44 42,48 L40,50 C38,47 35,46 32,46 C29,46 26,47 24,50 L22,48 Z" />
+                    </svg>
+                    <span class="logo-text text-2xl font-extrabold text-cyan-700 transition-colors duration-300">Qushal Tours</span>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="nav-link font-medium transition-all duration-300">Home</a>
+                    
+                    <!-- Tours Dropdown -->
+                    <div class="relative group">
+                        <button class="nav-link font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                            Tours
+                            <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown-menu absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-10 overflow-hidden">
+                            <a href="indian_tours.html" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Indian Tours</a>
+                            <a href="#" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Foreign Tours</a>
+                        </div>
+                    </div>
+                    
+                    <a href="index.html#offers" class="nav-link font-medium transition-all duration-300">Offers</a>
+                    <a href="index.html#testimonials" class="nav-link font-medium transition-all duration-300">Reviews</a>
+                    <a href="#footer" class="nav-link font-medium transition-all duration-300">Contacts</a>
+                    <a href="index.html#about" class="nav-link font-medium transition-all duration-300">About</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="nav-link font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                            Services
+                            <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown-menu absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-10 overflow-hidden">
+                            <a href="#" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Pickup Service</a>
+                            <a href="#" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Drop Service</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sign In & Mobile Menu Button -->
+                <div class="flex items-center gap-4">
+                    <a href="#" class="hidden md:inline-block bg-cyan-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60">
+                        Sign In
+                    </a>
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" id="menu-icon" class="h-6 w-6"></i>
+                        <i data-lucide="x" id="close-icon" class="h-6 w-6 hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200 bg-white shadow-lg">
+                <a href="index.html" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+
+                <!-- Mobile Tours Dropdown -->
+                <div>
+                    <button id="mobile-tours-button" class="w-full flex justify-between items-center text-gray-600 hover:bg-gray-50 hover:text-cyan-600 px-3 py-2 rounded-md text-base font-medium">
+                        Tours
+                        <i data-lucide="chevron-down" id="mobile-tours-icon" class="h-5 w-5 transition-transform duration-300"></i>
+                    </button>
+                    <div id="mobile-tours-menu" class="hidden pl-4 mt-1 space-y-1">
+                        <a href="indian_tours.html" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Indian Tours</a>
+                        <a href="#" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Foreign Tours</a>
+                    </div>
+                </div>
+                
+                <a href="index.html#offers" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Offers</a>
+                <a href="index.html#testimonials" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Reviews</a>
+                <a href="#footer" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Contacts</a>
+                <a href="index.html#about" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">About</a>
+
+                <!-- Mobile Services Dropdown -->
+                <div>
+                    <button id="mobile-services-button" class="w-full flex justify-between items-center text-gray-600 hover:bg-gray-50 hover:text-cyan-600 px-3 py-2 rounded-md text-base font-medium">
+                        Services
+                        <i data-lucide="chevron-down" id="mobile-services-icon" class="h-5 w-5 transition-transform duration-300"></i>
+                    </button>
+                    <div id="mobile-services-menu" class="hidden pl-4 mt-1 space-y-1">
+                        <a href="#" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Pickup Service</a>
+                        <a href="#" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Drop Service</a>
+                    </div>
+                </div>
+                
+                <a href="#" class="bg-cyan-600 text-white block px-3 py-2 rounded-md text-base font-medium text-center hover:bg-cyan-700 transition-colors">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main>
+
+        <!-- ========== 1. HERO SECTION ========== -->
+        <section id="hero" class="relative h-[70vh] min-h-[500px] flex items-center justify-center text-center overflow-hidden">
+            <!-- Hero Image -->
+            <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80" alt="Beautiful landscape of India" class="absolute top-0 left-0 w-full h-full object-cover -z-10">
+            
+            <!-- Hero Content -->
+            <div class="relative z-10 px-4 max-w-3xl animate-on-scroll is-visible">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-cyan-500 leading-tight mb-6" style="text-shadow: 0 2px 4px rgba(0,0,0,0.7);">
+                    Explore Incredible India
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 mb-10" style="text-shadow: 0 1px 3px rgba(0,0,0,0.7);">
+                    Find curated tours, from the majestic Himalayas to the serene backwaters of Kerala.
+                </p>
+            </div>
+        </section>
+
+        <!-- ========== 2. SEARCH/FILTER FORM ========== -->
+        <section id="booking-form" class="relative -mt-16 z-20">
+            <div class="max-w-6xl mx-auto px-4">
+                <form class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl animate-on-scroll">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        
+                        <!-- Destination -->
+                        <div class="relative">
+                            <label for="destination" class="block text-sm font-medium text-gray-700 mb-1">Destination</label>
+                            <div class="relative">
+                                <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
+                                <select id="destination" class="w-full pl-10 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200 appearance-none">
+                                    <option>All Destinations</option>
+                                    <option>Rajasthan</option>
+                                    <option>Kerala</option>
+                                    <option>Himalayas</option>
+                                    <option>Himachal Pradesh</option>
+                                    <option>Kashmir</option>
+                                    <option>Goa</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Tour Type -->
+                        <div class="relative">
+                            <label for="tour-type" class="block text-sm font-medium text-gray-700 mb-1">Tour Type</label>
+                            <div class="relative">
+                                <i data-lucide="briefcase" class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
+                                <select id="tour-type" class="w-full pl-10 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200 appearance-none">
+                                    <option>All Types</option>
+                                    <option>Adventure</option>
+                                    <option>Cultural</option>
+                                    <option>Honeymoon</option>
+                                    <option>Family</option>
+                                    <option>Spiritual</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="relative">
+                            <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                            <div class="relative">
+                                <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
+                                <select id="duration" class="w-full pl-10 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200 appearance-none">
+                                    <option>Any Duration</option>
+                                    <option>1-3 Days</option>
+                                    <option>4-6 Days</option>
+                                    <option>7-9 Days</option>
+                                    <option>10+ Days</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Price Range -->
+                        <div class="relative">
+                            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
+                            <div class="relative">
+                                <i data-lucide="indian-rupee" class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
+                                <select id="price" class="w-full pl-10 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200 appearance-none">
+                                    <option>Any Price</option>
+                                    <option>Under ₹10,000</option>
+                                    <option>₹10,000 - ₹25,000</option>
+                                    <option>₹25,000 - ₹50,000</option>
+                                    <option>Over ₹50,000</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Search Button -->
+                        <div class="md:col-span-2 lg:col-span-1">
+                            <label class="block text-sm font-medium text-transparent mb-1 hidden md:block">Search</label>
+                            <button type="submit" class="w-full h-full bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 hover:bg-cyan-700 transition-all duration-300 shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60">
+                                <i data-lucide="search" class="h-5 w-5"></i>
+                                <span>Search</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========== 3. TOP INDIAN DESTINATIONS ========== -->
+        <section id="destinations" class="py-24 bg-gray-50 overflow-hidden">
+            <!-- Full-width Header Bar -->
+            <div class="bg-gradient-to-r from-cyan-500 to-blue-600 py-4 shadow-lg shadow-cyan-500/30 transition-all duration-300 transform hover:scale-105 hover:shadow-cyan-400/60">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white text-center">
+                        Top Indian Destinations
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-lg text-gray-600 mt-6 max-w-2xl mx-auto animate-on-scroll">
+                    Explore the world's most breathtaking places with our curated tours.
+                </p>
+
+                <!-- Slider Wrapper -->
+                <div class="relative mt-12 animate-on-scroll">
+                    <!-- Slider Track -->
+                    <div id="destinations-slider-track" class="flex transition-transform duration-500 ease-in-out">
+                            
+-                        <!-- Card 1: Rajasthan -->
+-                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+-                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1524293115479-16a7810d2401?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Hawa Mahal in Jaipur, Rajasthan">
+-                                <div class="p-6 flex flex-col flex-grow">
+-                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Rajasthan</h3>
+-                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">
+-                                        Land of Kings, majestic forts, vibrant culture, and desert landscapes.
+-                                    </p>
+-                                    <a href="explore_tours.html?tour=rajasthan" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">
+-                                        Explore Now <i data-lucide="arrow-right" class="h-4 w-4"></i>
+-                                    </a>
+-                                    </a>
+-                                </div>
+-                            </div>
+-                        </div>
+-                        
+-                        <!-- Card 2: Kerala -->
+-                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+-                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1602216056096-3b40402e9a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Houseboat on Kerala backwaters">
+-                                <div class="p-6 flex flex-col flex-grow">
+-                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Kerala</h3>
+-                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">
+-                                        God's Own Country, known for its serene backwaters, tea plantations, and spice gardens.
+-                                    </p>
+-                                    <a href="explore_tours.html?tour=kerala" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">
+-                                        Explore Now <i data-lucide="arrow-right" class="h-4 w-4"></i>
+-                                    </a>
+-                                </div>
+-                            </div>
+-                        </div>
+-
+-                        <!-- Card 3: Himalayas -->
+-                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+-                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1589182373726-e4f64b281c7f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Snow-capped Himalayan mountains">
+-                                <div class="p-6 flex flex-col flex-grow">
+-                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Himalayas</h3>
+-                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">
+-                                        Majestic peaks, spiritual retreats, and thrilling treks await in the world's highest mountains.
+-                                    </p>
+-                                    <a href="explore_tours.html?tour=himalayas" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">
+-                                        Explore Now <i data-lucide="arrow-right" class="h-4 w-4"></i>
+-                                    </a>
+-                                </div>
+-                            </div>
+-                        </div>
+-                        
+-                        <!-- Card 4: Himachal Pradesh -->
+-                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+-                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1597074866923-39511871b80e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Manali in Himachal Pradesh">
+-                                <div class="p-6 flex flex-col flex-grow">
+-                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Himachal Pradesh</h3>
+-                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">
+-                                        Home to scenic mountain towns like Shimla and Manali, perfect for adventure and relaxation.
+-                                    </p>
+-                                    <a href="explore_tours.html?tour=himachal" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">
+-                                        Explore Now <i data-lucide="arrow-right" class="h-4 w-4"></i>
+-                                    </a>
+-                                </div>
+-                            </div>
+-                        </div>
+-                        
+-                        <!-- Card 5: Kashmir -->
+-                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+-                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1595821731306-44636916fde4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Dal Lake in Kashmir">
+-                                <div class="p-6 flex flex-col flex-grow">
+-                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Kashmir</h3>
+-                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">
+-                                        Often called 'Paradise on Earth', known for its stunning valleys, lakes, and shikara rides.
+-                                    </p>
+-                                    <a href="explore_tours.html?tour=kashmir" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">
+-                                        Explore Now <i data-lucide="arrow-right" class="h-4 w-4"></i>
+-                                    </a>
+-                                </div>
+-                            </div>
+-                        </div>
++                        <!-- North India: Manali -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1509644853274-3d1a0d3b1b2a?auto=format&fit=crop&w=800&q=80" alt="Manali">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Manali</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Snow-capped mountains, Solang valley and adventure activities.</p>
++                                    <a href="explore_tours.html?tour=manali" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Manali <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Gulmarg -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1473654729523-203e25dfda10?auto=format&fit=crop&w=800&q=80" alt="Gulmarg">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Gulmarg</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Gondola rides, skiing (seasonal) and alpine meadows.</p>
++                                    <a href="explore_tours.html?tour=gulmarg" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Gulmarg <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Sonamarg -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1595821731306-44636916fde4?auto=format&fit=crop&w=800&q=80" alt="Sonamarg">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Sonamarg</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Glacial valleys and easy treks to Thajiwas Glacier.</p>
++                                    <a href="explore_tours.html?tour=sonamarg" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Sonamarg <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Pahalgam -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1505765051403-2a8e8f6f6f0a?auto=format&fit=crop&w=800&q=80" alt="Pahalgam">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Pahalgam</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Lush valleys, river walks and peaceful retreats.</p>
++                                    <a href="explore_tours.html?tour=pahalgam" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Pahalgam <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Vaishno Devi -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1582719478147-1a4f2f9b0a3b?auto=format&fit=crop&w=800&q=80" alt="Vaishno Devi">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Vaishno Devi</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Spiritual pilgrimage to the revered Trikuta Hills shrine.</p>
++                                    <a href="explore_tours.html?tour=vaishnodevi" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Vaishno Devi <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Shimla -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1542831371-d531d36971e6?auto=format&fit=crop&w=800&q=80" alt="Shimla">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Shimla</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Colonial charm, Mall Road and nearby Kufri excursions.</p>
++                                    <a href="explore_tours.html?tour=shimla" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Shimla <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Ladakh -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80" alt="Ladakh">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Ladakh</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">High-altitude landscapes, Pangong Lake and cultural monasteries.</p>
++                                    <a href="explore_tours.html?tour=ladakh" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Ladakh <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
++
++                        <!-- Uttarakhand -->
++                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
++                            <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
++                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1505238680356-667803448bb6?auto=format&fit=crop&w=800&q=80" alt="Uttarakhand">
++                                <div class="p-6 flex flex-col flex-grow">
++                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Uttarakhand</h3>
++                                    <p class="text-gray-600 mb-4 line-clamp-3 flex-grow">Nainital, Rishikesh and spiritual & adventure experiences.</p>
++                                    <a href="explore_tours.html?tour=uttarakhand" class="font-medium text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition-all">Explore Uttarakhand <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
++                                </div>
++                            </div>
++                        </div>
+                         </div>
+                    
+                    <!-- Slider Controls -->
+                    <button id="dest-prev" class="absolute top-1/2 -translate-y-1/2 -left-4 sm:-left-6 bg-white p-2 rounded-full shadow-lg text-gray-600 hover:text-cyan-600 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/40 z-10" aria-label="Previous destination">
+                        <i data-lucide="chevron-left" class="h-6 w-6"></i>
+                    </button>
+                    <button id="dest-next" class="absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-6 bg-white p-2 rounded-full shadow-lg text-gray-600 hover:text-cyan-600 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/40 z-10" aria-label="Next destination">
+                        <i data-lucide="chevron-right" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 4. FEATURED INDIAN TOURS ========== -->
+        <section id="offers" class="py-24 bg-white overflow-hidden">
+            <!-- Full-width Header Bar -->
+            <div class="bg-gradient-to-r from-cyan-500 to-blue-600 py-4 shadow-lg shadow-cyan-500/30 transition-all duration-300 transform hover:scale-105 hover:shadow-cyan-400/60">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white text-center">
+                        Featured Indian Tours
+                    </h2>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-lg text-gray-600 mt-6 max-w-2xl mx-auto animate-on-scroll">
+                    Take advantage of our limited-time deals and save on your dream Indian vacation.
+                </p>
+                
+                <!-- Slider Wrapper -->
+                <div class="relative mt-12 animate-on-scroll">
+                    <!-- Slider Track -->
+                    <div id="offers-slider-track" class="flex transition-transform duration-500 ease-in-out">
+                        
+                        <!-- Offer 1: Golden Triangle -->
+                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                            <div class="border border-gray-200 rounded-xl shadow-lg overflow-hidden relative h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                                <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full z-10">15% OFF</span>
+                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1567153345504-b37f3940fb47?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="The Taj Mahal in Agra">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Golden Triangle</h3>
+                                    <p class="text-gray-600 mb-4">6 Nights (Delhi - Agra - Jaipur)</p>
+                                    <div class="flex items-baseline gap-2 mb-4">
+                                        <span class="text-3xl font-bold text-cyan-600">₹25,999</span>
+                                        <span class="text-xl line-through text-gray-500">₹30,500</span>
+                                    </div>
+                                    <a href="#" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60 mt-auto">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Offer 2: Kerala Backwaters -->
+                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                            <div class="border border-gray-200 rounded-xl shadow-lg overflow-hidden relative h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                                <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full z-10">NEW</span>
+                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1593693411515-c202b07e0568?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Kerala Backwaters">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Kerala Backwaters</h3>
+                                    <p class="text-gray-600 mb-4">5 Nights, Houseboat Stay</p>
+                                    <div class="flex items-baseline gap-2 mb-4">
+                                        <span class="text-3xl font-bold text-cyan-600">₹22,499</span>
+                                        <span class="text-xl text-gray-500">per person</span>
+                                    </div>
+                                    <a href="#" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60 mt-auto">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Offer 3: Leh & Ladakh -->
+                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                            <div class="border border-gray-200 rounded-xl shadow-lg overflow-hidden relative h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                                <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full z-10">POPULAR</span>
+                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1540310243878-319760731e8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Monastery in Leh, Ladakh">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Adventurous Ladakh</h3>
+                                    <p class="text-gray-600 mb-4">8-Day Bike Expedition</p>
+                                    <div class="flex items-baseline gap-2 mb-4">
+                                        <span class="text-3xl font-bold text-cyan-600">₹35,000</span>
+                                        <span class="text-xl line-through text-gray-500">₹38,000</span>
+                                    </div>
+                                    <a href="#" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60 mt-auto">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Offer 4: Goa Getaway -->
+                        <div class="slider-slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                            <div class="border border-gray-200 rounded-xl shadow-lg overflow-hidden relative h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                                <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full z-10">40% OFF</span>
+                                <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Beach in Goa">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Goa Beach Getaway</h3>
+                                    <p class="text-gray-600 mb-4">4 Nights, Beach Resort</p>
+                                    <div class="flex items-baseline gap-2 mb-4">
+                                        <span class="text-3xl font-bold text-cyan-600">₹12,000</span>
+                                        <span class="text-xl line-through text-gray-500">₹20,000</span>
+                                    </div>
+                                    <a href="#" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60 mt-auto">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Slider Controls -->
+                    <button id="offer-prev" class="absolute top-1/2 -translate-y-1/2 -left-4 sm:-left-6 bg-white p-2 rounded-full shadow-lg text-gray-600 hover:text-cyan-600 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/40 z-10" aria-label="Previous offer">
+                        <i data-lucide="chevron-left" class="h-6 w-6"></i>
+                    </button>
+                    <button id="offer-next" class="absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-6 bg-white p-2 rounded-full shadow-lg text-gray-600 hover:text-cyan-600 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/40 z-10" aria-label="Next offer">
+                        <i data-lucide="chevron-right" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer id="footer" class="bg-slate-900 text-slate-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <!-- Responsive 12-column grid system -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                
+                <!-- Column 1: Brand & Socials -->
+                <div class="animate-on-scroll md:col-span-6 lg:col-span-4">
+                    <a href="index.html" class="flex items-center gap-2 mb-4" aria-label="Qushal Tours Homepage">
+                        <!-- Logo - UPDATED -->
+                        <svg class="logo-svg" width="32" height="32" viewBox="0 0 64 64" fill="#16A3B8" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32,4 C16.5,4 4,16.5 4,32 C4,47.5 16.5,60 32,60 C47.5,60 60,47.5 60,32 C60,16.5 47.5,4 32,4 Z M32,52 C21,52 12,43 12,32 C12,21 21,12 32,12 C43,12 52,21 52,32 C52,43 43,52 32,52 Z" />
+                            <path d="M45.5,45.5 L58,58 L62,54 L52,48 L48,42 L45.5,45.5 Z" />
+                            <path d="M22,48 C24,44 28,42 32,42 C36,42 40,44 42,48 L40,50 C38,47 35,46 32,46 C29,46 26,47 24,50 L22,48 Z" />
+                        </svg>
+                        <span class="text-2xl font-extrabold text-white">Qushal tours and travels</span>
+                    </a>
+                    <p class="text-slate-400 mb-6">
+                        Curating unforgettable journeys across India and the globe.
+                    </p>
+                    <!-- Social Media Icons -->
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Facebook">
+                            <i data-lucide="facebook" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Instagram">
+                            <i data-lucide="instagram" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Twitter">
+                            <i data-lucide="twitter" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Youtube">
+                            <i data-lucide="youtube" class="h-6 w-6"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Column 2: Explore -->
+                <div class="animate-on-scroll md:col-span-3 lg:col-span-2">
+                    <h4 class="text-lg font-semibold text-white mb-4">Explore</h4>
+                    <ul class="space-y-2">
+                        <li><a href="indian_tours.html" class="hover:text-cyan-400 transition-all">Indian Tours</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">Foreign Tours</a></li>
+                        <li><a href="index.html#offers" class="hover:text-cyan-400 transition-all">Special Offers</a></li>
+                        <li><a href="index.html#testimonials" class="hover:text-cyan-400 transition-all">Reviews</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Company -->
+                <div class="animate-on-scroll md:col-span-3 lg:col-span-2">
+                    <h4 class="text-lg font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#about" class="hover:text-cyan-400 transition-all">About Us</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">FAQ</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div class="animate-on-scroll md:col-span-12 lg:col-span-4">
+                    <h4 class="text-lg font-semibold text-white mb-4">Subscribe</h4>
+                    <p class="text-slate-400 mb-4">Get the latest deals and travel inspiration sent straight to your inbox.</p>
+                    <form class="flex flex-col sm:flex-row gap-2">
+                        <input type="email" placeholder="Enter your email" class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" required>
+                        <button type="submit" class="bg-cyan-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-cyan-700 transition-colors duration-300 flex-shrink-0">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="border-t border-slate-700 mt-12 pt-8 text-center">
+                <p class="text-sm text-slate-400">&copy; 2025 Qushal tours and travels. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Header Scroll Effect ---
+            const header = document.getElementById('main-header');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            const handleScroll = () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                    header.classList.remove('at-top');
+                } else {
+                    // Only remove if mobile menu is NOT open
+                    if (mobileMenu.classList.contains('hidden')) {
+                         header.classList.add('at-top');
+                         header.classList.remove('scrolled');
+                    }
+                }
+            };
+            
+            // Set initial state on load
+            handleScroll();
+            // Add scroll listener
+            window.addEventListener('scroll', handleScroll);
+
+
+            // 1. Initialize Lucide Icons
+            lucide.createIcons();
+
+            // 2. Mobile Menu Toggle
+            const menuButton = document.getElementById('mobile-menu-button');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            // Mobile Services Menu Toggle
+            const mobileServicesButton = document.getElementById('mobile-services-button');
+            const mobileServicesMenu = document.getElementById('mobile-services-menu');
+            const mobileServicesIcon = document.getElementById('mobile-services-icon');
+
+            mobileServicesButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent menu from closing
+                mobileServicesMenu.classList.toggle('hidden');
+                mobileServicesIcon.classList.toggle('rotate-180');
+            });
+            
+            // Mobile Tours Menu Toggle
+            const mobileToursButton = document.getElementById('mobile-tours-button');
+            const mobileToursMenu = document.getElementById('mobile-tours-menu');
+            const mobileToursIcon = document.getElementById('mobile-tours-icon');
+
+            mobileToursButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent menu from closing
+                mobileToursMenu.classList.toggle('hidden');
+                mobileToursIcon.classList.toggle('rotate-180');
+            });
+
+
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+                const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', !isExpanded);
+                
+                // Handle header state when menu opens at top
+                if (!isExpanded && window.scrollY <= 50) {
+                    // Menu is opening at the top
+                    header.classList.add('scrolled'); // Force scrolled state
+                    header.classList.remove('at-top');
+                } else if (isExpanded && window.scrollY <= 50) {
+                    // Menu is closing at the top
+                    header.classList.remove('scrolled');
+                    header.classList.add('at-top');
+                }
+            });
+            
+            // Close mobile menu when a link is clicked
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                    
+                    // Ensure header state is correct after link click
+                    handleScroll();
+                    
+                    // Close services submenu if open
+                    mobileServicesMenu.classList.add('hidden');
+                    mobileServicesIcon.classList.remove('rotate-180');
+                    // Close tours submenu if open
+                    mobileToursMenu.classList.add('hidden');
+                    mobileToursIcon.classList.remove('rotate-180');
+                });
+            });
+
+
+            // 3. Generic Slider Setup Function
+            function setupSlider(trackId, prevBtnId, nextBtnId, slideQuerySelector) {
+                const track = document.getElementById(trackId);
+                const prevBtn = document.getElementById(prevBtnId);
+                const nextBtn = document.getElementById(nextBtnId);
+                
+                if (!track || !prevBtn || !nextBtn) {
+                    return; // Exit if essential elements aren't found
+                }
+                
+                const slides = Array.from(track.querySelectorAll(slideQuerySelector));
+                if (slides.length === 0) {
+                    return; // Exit if no slides
+                }
+
+                let currentIndex = 0;
+                let slideWidth = 0;
+                let slidesToShow = 0;
+                let totalSlides = slides.length;
+                let maxIndex = 0;
+
+                function getSlidesToShow() {
+                    if (window.innerWidth >= 1024) return 3; // lg
+                    if (window.innerWidth >= 640) return 2;  // sm
+                    return 1;
+                }
+
+                function updateSlider() {
+                    slidesToShow = getSlidesToShow();
+                    
+                    // Recalculate slideWidth based on the track's parent container
+                    if (track.parentElement) {
+                        slideWidth = track.parentElement.clientWidth / slidesToShow;
+                    } else {
+                        slideWidth = track.clientWidth / slidesToShow;
+                    }
+                     
+                    maxIndex = totalSlides - slidesToShow;
+                    
+                    // Adjust slide widths dynamically
+                    slides.forEach(slide => {
+                        slide.style.width = `${slideWidth}px`;
+                    });
+
+                    // Clamp currentIndex if window resized
+                    if (currentIndex > maxIndex) {
+                        currentIndex = maxIndex;
+                    }
+                    if (currentIndex < 0 || totalSlides <= slidesToShow) {
+                         currentIndex = 0;
+                    }
+
+                    updateSliderPosition();
+                }
+
+                function updateSliderPosition() {
+                    if (totalSlides <= slidesToShow) {
+                        // Not enough slides to slide
+                        track.style.transform = `translateX(0px)`;
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'none';
+                        return;
+                    }
+
+                    // Show buttons if they were hidden
+                    prevBtn.style.display = 'block';
+                    nextBtn.style.display = 'block';
+
+                    const moveDistance = -currentIndex * slideWidth;
+                    track.style.transform = `translateX(${moveDistance}px)`;
+                    
+                    // Disable/Enable buttons
+                    prevBtn.disabled = currentIndex === 0;
+                    nextBtn.disabled = currentIndex >= maxIndex;
+                    
+                    prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+                    nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                        updateSliderPosition();
+                    }
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateSliderPosition();
+                    }
+                });
+                
+                // Handle window resize
+                window.addEventListener('resize', updateSlider);
+
+                // Initial setup
+                updateSlider();
+            }
+
+            // 3.1. Initialize Destinations Slider
+            setupSlider('destinations-slider-track', 'dest-prev', 'dest-next', '.slider-slide');
+            
+            // 3.2. Initialize Offers Slider
+            setupSlider('offers-slider-track', 'offer-prev', 'offer-next', '.slider-slide');
+
+            // 4. Scroll-on-Reveal Animation
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is in view
+            });
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+

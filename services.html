@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickup & Drop Service - Qushal Tours and Travels</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Font (Poppins) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* Base font */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Hero background dimming */
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            z-index: -1;
+        }
+
+        /* Scroll-in animation */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header Scroll Effect */
+        #main-header {
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        /* Initial state (on hero) */
+        #main-header.at-top {
+            background-color: transparent;
+            color: #ffffff; /* White text */
+        }
+        #main-header.at-top .nav-link {
+            color: #E5E7EB; /* light gray */
+        }
+        #main-header.at-top .nav-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.7);
+        }
+        #main-header.at-top .logo-text {
+            color: #ffffff;
+        }
+         #main-header.at-top .logo-svg {
+            fill: #ffffff;
+        }
+        #main-header.at-top #mobile-menu-button {
+            color: #E5E7EB;
+        }
+
+        /* Scrolled state */
+        #main-header.scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+            color: #1f2937; /* Dark text */
+        }
+        #main-header.scrolled .nav-link {
+            color: #4b5563; /* medium-gray */
+        }
+        #main-header.scrolled .nav-link:hover {
+            color: #0e7490; /* cyan-700 */
+        }
+        #main-header.scrolled .logo-text {
+            color: #0e7490; /* cyan-700 */
+        }
+        #main-header.scrolled .logo-svg {
+            fill: #0e7490; /* cyan-700 */
+        }
+        #main-header.scrolled #mobile-menu-button {
+            color: #4b5563;
+        }
+        
+        /* Styles for desktop dropdown */
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        .group:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+         /* State for dropdown */
+         #main-header.at-top .dropdown-menu {
+            background-color: rgba(31, 41, 55, 0.8); /* bg-gray-800/80 */
+            backdrop-filter: blur(8px);
+            color: #E5E7EB;
+        }
+        #main-header.scrolled .dropdown-menu {
+            background-color: #ffffff;
+            color: #4b5563;
+        }
+        
+        /* Fix for date/time input icon color */
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.5) sepia(0.3) saturate(5) hue-rotate(150deg);
+        }
+        
+    </style>
+</head>
+<body class="bg-gray-100 text-slate-800 antialiased">
+
+    <!-- ========== HEADER ========== -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 at-top">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-18 py-3">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2" aria-label="Qushal Tours Homepage">
+                    <!-- Q with Eagle and Plane Logo -->
+                    <svg class="logo-svg transition-colors duration-300" width="36" height="36" viewBox="0 0 100 100" fill="#0E7490" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,10A40,40 0 1,1 10,50A40,40 0 0,1 50,10M50,2A48,48 0 1,0 98,50A48,48 0 0,0 50,2Z" fill="currentColor"/>
+                        <path d="M50,18A32,32 0 1,1 18,50A32,32 0 0,1 50,18M50,10A40,40 0 1,0 90,50A40,40 0 0,0 50,10Z" fill="currentColor" opacity="0.1"/>
+                        <!-- Eagle -->
+                        <path d="M35 60 C 40 55, 45 58, 50 60 C 55 58, 60 55, 65 60 C 60 65, 50 70, 35 60 Z M 40 65 C 45 62, 50 64, 50 64 C 50 64, 55 62, 60 65 C 55 68, 50 68, 40 65 Z" fill="currentColor"/>
+                        <!-- Plane -->
+                        <path d="M 68 70 L 78 65 C 80 64, 82 64, 83 66 L 85 68 C 86 69, 86 71, 85 72 L 83 74 C 82 75, 80 75, 78 74 L 70 69 L 72 73 L 75 75 L 73 77 L 70 75 L 68 78 L 66 76 L 68 73 L 68 70 Z" fill="currentColor"/>
+                    </svg>
+                    <span class="logo-text text-2xl font-extrabold text-cyan-700 transition-colors duration-300">Qushal Tours</span>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="nav-link font-medium transition-all duration-300">Home</a>
+                    
+                    <!-- Tours Dropdown -->
+                    <div class="relative group">
+                        <button class="nav-link font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                            Tours
+                            <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown-menu absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-10 overflow-hidden">
+                            <a href="indian_tours.html" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Indian Tours</a>
+                            <a href="#" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Foreign Tours</a>
+                        </div>
+                    </div>
+                    
+                    <a href="index.html#offers" class="nav-link font-medium transition-all duration-300">Offers</a>
+                    <a href="index.html#testimonials" class="nav-link font-medium transition-all duration-300">Reviews</a>
+                    <a href="#footer" class="nav-link font-medium transition-all duration-300">Contacts</a>
+                    <a href="index.html#about" class="nav-link font-medium transition-all duration-300">About</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="nav-link font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                            Services
+                            <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown-menu absolute top-full left-0 mt-2 w-48 rounded-lg shadow-xl z-10 overflow-hidden">
+                            <a href="services.html" class="block px-4 py-3 text-sm hover:bg-cyan-600 hover:text-white transition-colors duration-200">Pickup & Drop</a>
+                            <!-- Add other services here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sign In & Mobile Menu Button -->
+                <div class="flex items-center gap-4">
+                    <a href="#" class="hidden md:inline-block bg-cyan-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60">
+                        Sign In
+                    </a>
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" id="menu-icon" class="h-6 w-6"></i>
+                        <i data-lucide="x" id="close-icon" class="h-6 w-6 hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200 bg-white shadow-lg">
+                <a href="index.html" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+
+                <!-- Mobile Tours Dropdown -->
+                <div>
+                    <button id="mobile-tours-button" class="w-full flex justify-between items-center text-gray-600 hover:bg-gray-50 hover:text-cyan-600 px-3 py-2 rounded-md text-base font-medium">
+                        Tours
+                        <i data-lucide="chevron-down" id="mobile-tours-icon" class="h-5 w-5 transition-transform duration-300"></i>
+                    </button>
+                    <div id="mobile-tours-menu" class="hidden pl-4 mt-1 space-y-1">
+                        <a href="indian_tours.html" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Indian Tours</a>
+                        <a href="#" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Foreign Tours</a>
+                    </div>
+                </div>
+                
+                <a href="index.html#offers" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Offers</a>
+                <a href="index.html#testimonials" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Reviews</a>
+                <a href="#footer" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Contacts</a>
+                <a href="index.html#about" class="text-gray-600 hover:bg-gray-50 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">About</a>
+
+                <!-- Mobile Services Dropdown -->
+                <div>
+                    <button id="mobile-services-button" class="w-full flex justify-between items-center text-gray-600 hover:bg-gray-50 hover:text-cyan-600 px-3 py-2 rounded-md text-base font-medium">
+                        Services
+                        <i data-lucide="chevron-down" id="mobile-services-icon" class="h-5 w-5 transition-transform duration-300"></i>
+                    </button>
+                    <div id="mobile-services-menu" class="hidden pl-4 mt-1 space-y-1">
+                        <a href="services.html" class="mobile-nav-link text-gray-500 hover:bg-gray-100 hover:text-cyan-600 block px-3 py-2 rounded-md text-base font-medium">Pickup & Drop</a>
+                    </div>
+                </div>
+                
+                <a href="#" class="bg-cyan-600 text-white block px-3 py-2 rounded-md text-base font-medium text-center hover:bg-cyan-700 transition-colors">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main>
+
+        <!-- ========== 1. HERO SECTION ========== -->
+        <section id="hero" class="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center overflow-hidden z-0">
+            <!-- Image Background -->
+            <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover -z-10">
+                <source src="https://www.pexels.com/download/video/17853968/" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            
+            <!-- Hero Content -->
+            <div class="relative z-10 px-4 max-w-3xl animate-on-scroll is-visible">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6" style="text-shadow: 0 2px 6px rgba(0,0,0,0.7);">
+                    Reliable Pickup & Drop
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 mb-10" style="text-shadow: 0 1px 4px rgba(0,0,0,0.7);">
+                    Your personal driver for comfortable, safe, and on-time journeys.
+                </p>
+            </div>
+        </section>
+
+        <!-- ========== 2. BOOKING FORM SECTION ========== -->
+        <section id="booking-form" class="relative -mt-16 z-20">
+            <div class="max-w-6xl mx-auto px-4">
+                <form id="bookingForm" class="bg-white p-6 sm:p-10 rounded-xl shadow-2xl animate-on-scroll is-visible">
+                    
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">Book Your Ride</h2>
+                    
+                    <!-- Section: Trip Details -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-cyan-700 mb-6 border-b pb-3">1. Trip Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Pickup Location -->
+                            <div>
+                                <label for="pickup-location" class="block text-sm font-medium text-gray-700 mb-1">Pickup Location</label>
+                                <input type="text" id="pickup-location" placeholder="e.g., Delhi Airport, T3" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Drop Location -->
+                            <div>
+                                <label for="drop-location" class="block text-sm font-medium text-gray-700 mb-1">Drop Location</label>
+                                <input type="text" id="drop-location" placeholder="e.g., Manali Mall Road" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Vehicle Type -->
+                            <div>
+                                <label for="vehicle-type" class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+                                <select id="vehicle-type" class="w-full pl-4 pr-10 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                                    <option value="">Select a vehicle</option>
+                                    <option value="sedan">Sedan (Dzire, Etios, etc.)</option>
+                                    <option value="suv">SUV (Innova, Ertiga, etc.)</option>
+                                    <option value="traveller">Tempo Traveller (12 Seater)</option>
+                                    <option value="luxury">Luxury (Mercedes, Audi, etc.)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Pickup Date -->
+                            <div>
+                                <label for="pickup-date" class="block text-sm font-medium text-gray-700 mb-1">Pickup Date</label>
+                                <input type="date" id="pickup-date" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Pickup Time -->
+                            <div>
+                                <label for="pickup-time" class="block text-sm font-medium text-gray-700 mb-1">Pickup Time</label>
+                                <input type="time" id="pickup-time" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Trip Type -->
+                            <div>
+                                <label for="trip-type" class="block text-sm font-medium text-gray-700 mb-1">Trip Type</label>
+                                <select id="trip-type" class="w-full pl-4 pr-10 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                                    <option value="one-way">One Way</option>
+                                    <option value="round-trip">Round Trip</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Section: Your Details -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-cyan-700 mb-6 border-b pb-3">2. Your Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Full Name -->
+                            <div>
+                                <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="full-name" placeholder="Enter your full name" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="Enter your 10-digit number" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Email Address -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" placeholder="Enter your email" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                            <!-- Number of Passengers -->
+                            <div>
+                                <label for="passengers" class="block text-sm font-medium text-gray-700 mb-1">Number of Passengers</label>
+                                <input type="number" id="passengers" placeholder="e.g., 4" min="1" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200" required>
+                            </div>
+                            
+                             <!-- Alternate Phone (Optional) -->
+                            <div>
+                                <label for="alt-phone" class="block text-sm font-medium text-gray-700 mb-1">Alternate Phone <span class="text-xs text-gray-500">(Optional)</span></label>
+                                <input type="tel" id="alt-phone" placeholder="Backup contact number" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200">
+                            </div>
+                            
+                             <!-- Full Pickup Address (Optional) -->
+                            <div class="md:col-span-2 lg:col-span-1">
+                                <label for="pickup-address" class="block text-sm font-medium text-gray-700 mb-1">Full Pickup Address <span class="text-xs text-gray-500">(Optional)</span></label>
+                                <input type="text" id="pickup-address" placeholder="e.g., House No, Street, Landmark" class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200">
+                            </div>
+
+                            <!-- Special Instructions (Optional) -->
+                            <div class="md:col-span-2 lg:col-span-3">
+                                <label for="instructions" class="block text-sm font-medium text-gray-700 mb-1">Special Instructions <span class="text-xs text-gray-500">(Optional)</span></label>
+                                <textarea id="instructions" rows="3" placeholder="e.g., Flight number, specific route, extra luggage..." class="w-full pl-4 pr-4 py-3 rounded-lg border-gray-300 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all duration-200"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg px-12 py-4 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/50 hover:shadow-xl hover:shadow-cyan-400/70">
+                            <i data-lucide="check-circle" class="h-6 w-6"></i>
+                            Request Booking
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <!-- ========== 3. "HOW IT WORKS" SECTION ========== -->
+        <section id="how-it-works" class="py-24 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto animate-on-scroll">
+                    <h2 class="inline-block text-3xl sm:text-4xl font-extrabold text-white p-4 px-8 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/40 transition duration-300 transform hover:scale-105 hover:shadow-cyan-400/60">
+                        How It Works
+                    </h2>
+                </div>
+                
+                <!-- Steps Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                    <!-- Step 1 -->
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.1s;">
+                        <div class="inline-flex items-center justify-center h-20 w-20 rounded-full bg-cyan-100 text-cyan-600 mb-6 shadow-md">
+                            <i data-lucide="file-text" class="h-10 w-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">1. Request Your Ride</h3>
+                        <p class="text-gray-600">
+                            Fill out the detailed form above with your trip requirements, vehicle choice, and contact details.
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.2s;">
+                        <div class="inline-flex items-center justify-center h-20 w-20 rounded-full bg-cyan-100 text-cyan-600 mb-6 shadow-md">
+                            <i data-lucide="phone-call" class="h-10 w-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">2. We Confirm</h3>
+                        <p class="text-gray-600">
+                            Our team will review your request and call you back shortly to confirm the driver, vehicle, and price.
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.3s;">
+                        <div class="inline-flex items-center justify-center h-20 w-20 rounded-full bg-cyan-100 text-cyan-600 mb-6 shadow-md">
+                            <i data-lucide="car-taxi-front" class="h-10 w-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">3. Enjoy Your Trip</h3>
+                        <p class="text-gray-600">
+                            Your driver will arrive at the specified time and location. Sit back, relax, and enjoy a safe journey.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        <!-- ========== 4. "WHY CHOOSE US" SECTION ========== -->
+        <section id="why-choose-us" class="py-24 bg-gray-100">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- Image -->
+                    <div class="animate-on-scroll">
+                        <img src="https://images.unsplash.com/photo-1599468057238-68b1c416346b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Professional driver" class="rounded-xl shadow-2xl w-full h-full object-cover" style="max-height: 500px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="animate-on-scroll" style="animation-delay: 0.1s;">
+                        <h2 class="inline-block text-3xl sm:text-4xl font-extrabold text-white p-4 px-8 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/40 transition duration-300 transform hover:scale-105 hover:shadow-cyan-400/60 mb-8">
+                            Why Choose Us
+                        </h2>
+                        
+                        <p class="text-lg text-gray-600 mb-8">
+                            We are committed to providing a travel experience that is safe, comfortable, and reliable. Our fleet is maintained to the highest standards, and our drivers are trained professionals.
+                        </p>
+                        
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-cyan-600 text-white shadow-md">
+                                    <i data-lucide="shield-check" class="h-6 w-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-900">Safety First</h4>
+                                    <p class="text-gray-600">All vehicles are GPS-tracked and regularly inspected. Our drivers undergo thorough background checks.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-cyan-600 text-white shadow-md">
+                                    <i data-lucide="user-check" class="h-6 w-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-900">Professional Drivers</h4>
+                                    <p class="text-gray-600">Courteous, experienced, and knowledgeable drivers who are experts in hill and highway driving.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-cyan-600 text-white shadow-md">
+                                    <i data-lucide="sparkle" class="h-6 w-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-900">Clean & Modern Fleet</h4>
+                                    <p class="text-gray-600">A wide range of modern, clean, and well-maintained vehicles to suit your every need.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 5. "AVAILABLE VEHICLES" SECTION ========== -->
+        <section id="available-vehicles" class="py-24 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto animate-on-scroll">
+                    <h2 class="inline-block text-3xl sm:text-4xl font-extrabold text-white p-4 px-8 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/40 transition duration-300 transform hover:scale-105 hover:shadow-cyan-400/60">
+                        Our Fleet
+                    </h2>
+                </div>
+                
+                <!-- Vehicle Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                    
+                    <!-- Card 1: Sedan -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition duration-500 hover:shadow-2xl hover:-translate-y-2 animate-on-scroll">
+                        <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1618036495146-f0b4b2f81c9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Sedan car">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Sedan</h3>
+                            <p class="text-gray-600 mb-4">Perfect for 1-4 passengers. (e.g., Dzire, Etios, Amaze)</p>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-2xl font-bold text-cyan-600">From ₹12</span>
+                                <span class="text-gray-500">/ km</span>
+                            </div>
+                            <a href="#booking-form" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2: SUV -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition duration-500 hover:shadow-2xl hover:-translate-y-2 animate-on-scroll" style="animation-delay: 0.1s;">
+                        <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1588265436-70f9243b35c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="SUV car">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">SUV</h3>
+                            <p class="text-gray-600 mb-4">Spacious for 5-7 passengers. (e.g., Innova, Ertiga, XUV)</p>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-2xl font-bold text-cyan-600">From ₹16</span>
+                                <span class="text-gray-500">/ km</span>
+                            </div>
+                            <a href="#booking-form" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Tempo Traveller -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition duration-500 hover:shadow-2xl hover:-translate-y-2 animate-on-scroll" style="animation-delay: 0.2s;">
+                        <img class="w-full h-60 object-cover" src="https://images.unsplash.com/photo-1628172235384-e6b71a25101b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Tempo Traveller van">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Tempo Traveller</h3>
+                            <p class="text-gray-600 mb-4">Ideal for large groups (8-12+). (e.g., Force Traveller)</p>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-2xl font-bold text-cyan-600">From ₹25</span>
+                                <span class="text-gray-500">/ km</span>
+                            </div>
+                            <a href="#booking-form" class="w-full text-center block bg-cyan-600 text-white font-medium py-3 rounded-lg hover:bg-cyan-700 transition-all shadow-md shadow-cyan-600/40 hover:shadow-lg hover:shadow-cyan-500/60">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer id="footer" class="bg-slate-900 text-slate-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <!-- Responsive 12-column grid system -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                
+                <!-- Column 1: Brand & Socials -->
+                <div class="md:col-span-6 lg:col-span-4">
+                    <a href="index.html" class="flex items-center gap-2 mb-4" aria-label="Qushal Tours Homepage">
+                        <!-- Q with Eagle and Plane Logo -->
+                        <svg width="36" height="36" viewBox="0 0 100 100" fill="#16A3B8" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50,10A40,40 0 1,1 10,50A40,40 0 0,1 50,10M50,2A48,48 0 1,0 98,50A48,48 0 0,0 50,2Z" fill="currentColor"/>
+                            <path d="M50,18A32,32 0 1,1 18,50A32,32 0 0,1 50,18M50,10A40,40 0 1,0 90,50A40,40 0 0,0 50,10Z" fill="currentColor" opacity="0.1"/>
+                            <path d="M35 60 C 40 55, 45 58, 50 60 C 55 58, 60 55, 65 60 C 60 65, 50 70, 35 60 Z M 40 65 C 45 62, 50 64, 50 64 C 50 64, 55 62, 60 65 C 55 68, 50 68, 40 65 Z" fill="currentColor"/>
+                            <path d="M 68 70 L 78 65 C 80 64, 82 64, 83 66 L 85 68 C 86 69, 86 71, 85 72 L 83 74 C 82 75, 80 75, 78 74 L 70 69 L 72 73 L 75 75 L 73 77 L 70 75 L 68 78 L 66 76 L 68 73 L 68 70 Z" fill="currentColor"/>
+                        </svg>
+                        <span class="text-2xl font-extrabold text-white">Qushal tours and travels</span>
+                    </a>
+                    <p class="text-slate-400 mb-6">
+                        Curating unforgettable journeys across the globe. Let us plan your next adventure.
+                    </p>
+                    <!-- Social Media Icons -->
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Facebook">
+                            <i data-lucide="facebook" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Instagram">
+                            <i data-lucide="instagram" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Twitter">
+                            <i data-lucide="twitter" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-cyan-400 transition-all" aria-label="Youtube">
+                            <i data-lucide="youtube" class="h-6 w-6"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Column 2: Explore -->
+                <div class="md:col-span-3 lg:col-span-2">
+                    <h4 class="text-lg font-semibold text-white mb-4">Explore</h4>
+                    <ul class="space-y-2">
+                        <li><a href="indian_tours.html" class="hover:text-cyan-400 transition-all">Indian Tours</a></li>
+                        <li><a href="index.html#offers" class="hover:text-cyan-400 transition-all">Special Offers</a></li>
+                        <li><a href="index.html#testimonials" class="hover:text-cyan-400 transition-all">Reviews</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Company -->
+                <div class="md:col-span-3 lg:col-span-2">
+                    <h4 class="text-lg font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#about" class="hover:text-cyan-400 transition-all">About Us</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">FAQ</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-all">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div class="md:col-span-12 lg:col-span-4">
+                    <h4 class="text-lg font-semibold text-white mb-4">Subscribe</h4>
+                    <p class="text-slate-400 mb-4">Get the latest deals and travel inspiration sent straight to your inbox.</p>
+                    <form class="flex flex-col sm:flex-row gap-2">
+                        <input type="email" placeholder="Enter your email" class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" required>
+                        <button type="submit" class="bg-cyan-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-cyan-700 transition-colors duration-300 flex-shrink-0">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="border-t border-slate-700 mt-12 pt-8 text-center">
+                <p class="text-sm text-slate-400">&copy; 2025 Qushal tours and travels. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Header Scroll Effect ---
+            const header = document.getElementById('main-header');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            const handleScroll = () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                    header.classList.remove('at-top');
+                } else {
+                    // Only remove if mobile menu is NOT open
+                    if (mobileMenu && mobileMenu.classList.contains('hidden')) {
+                         header.classList.add('at-top');
+                         header.classList.remove('scrolled');
+                    }
+                }
+            };
+            
+            // Set initial state on load
+            handleScroll();
+            // Add scroll listener
+            window.addEventListener('scroll', handleScroll);
+
+
+            // 1. Initialize Lucide Icons
+            lucide.createIcons();
+
+            // 2. Mobile Menu Toggle
+            const menuButton = document.getElementById('mobile-menu-button');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            // Mobile Services Menu Toggle
+            const mobileServicesButton = document.getElementById('mobile-services-button');
+            const mobileServicesMenu = document.getElementById('mobile-services-menu');
+            const mobileServicesIcon = document.getElementById('mobile-services-icon');
+
+            if(mobileServicesButton) { // Add check
+                mobileServicesButton.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent menu from closing
+                    mobileServicesMenu.classList.toggle('hidden');
+                    mobileServicesIcon.classList.toggle('rotate-180');
+                });
+            }
+            
+            // Mobile Tours Menu Toggle
+            const mobileToursButton = document.getElementById('mobile-tours-button');
+            const mobileToursMenu = document.getElementById('mobile-tours-menu');
+            const mobileToursIcon = document.getElementById('mobile-tours-icon');
+
+            if(mobileToursButton) { // Add check
+                mobileToursButton.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent menu from closing
+                    mobileToursMenu.classList.toggle('hidden');
+                    mobileToursIcon.classList.toggle('rotate-180');
+                });
+            }
+
+
+            if(menuButton) { // Add check
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                    menuButton.setAttribute('aria-expanded', !isExpanded);
+                    
+                    // Handle header state when menu opens at top
+                    if (!isExpanded && window.scrollY <= 50) {
+                        // Menu is opening at the top
+                        header.classList.add('scrolled'); // Force scrolled state
+                        header.classList.remove('at-top');
+                    } else if (isExpanded && window.scrollY <= 50) {
+                        // Menu is closing at the top
+                        header.classList.remove('scrolled');
+                        header.classList.add('at-top');
+                    }
+                });
+            }
+            
+            // Close mobile menu when a link is clicked
+            if(mobileMenu) { // Add check
+                mobileMenu.querySelectorAll('a.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                        menuButton.setAttribute('aria-expanded', 'false');
+                        
+                        // Ensure header state is correct after link click
+                        handleScroll();
+                        
+                        // Close submenus if open
+                        if(mobileServicesMenu) mobileServicesMenu.classList.add('hidden');
+                        if(mobileServicesIcon) mobileServicesIcon.classList.remove('rotate-180');
+                        if(mobileToursMenu) mobileToursMenu.classList.add('hidden');
+                        if(mobileToursIcon) mobileToursIcon.classList.remove('rotate-180');
+                    });
+                });
+            }
+
+
+            // 3. Scroll-on-Reveal Animation
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Optional: Remove class to re-animate on scroll up
+                        // entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is in view
+            });
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+            // ...existing code...
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // --- Booking form redirect to ticket generator (passes form values as query params) ---
+            (function(){
+                const bookingForm = document.getElementById('bookingForm');
+                if (!bookingForm) return;
+
+                function getVal(id) {
+                    const el = document.getElementById(id);
+                    return el ? el.value.trim() : '';
+                }
+
+                bookingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // minimal required validation
+                    const required = ['pickup-location','drop-location','vehicle-type','pickup-date','pickup-time','trip-type','full-name','phone','email','passengers'];
+                    for (const id of required) {
+                        if (!getVal(id)) {
+                            const el = document.getElementById(id);
+                            if (el) el.focus();
+                            alert('Please fill: ' + id.replace(/-/g,' '));
+                            return;
+                        }
+                    }
+
+                    const params = new URLSearchParams();
+                    const fields = ['pickup-location','drop-location','vehicle-type','pickup-date','pickup-time','trip-type','full-name','phone','email','passengers','alt-phone','pickup-address','instructions'];
+                    fields.forEach(f => {
+                        const v = getVal(f);
+                        if (v) params.set(f, v);
+                    });
+
+                    const target = 'ticketgen/src/ticketgen.html';
+                    // redirect in same tab:
+                    window.location.href = target + '?' + params.toString();
+                    // -- OR open in new tab:
+                    // window.open(target + '?' + params.toString(), '_blank');
+                });
+            })();
+// ...existing code...
+
+            
+
+        });
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Qushal Tours E-Ticket</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root{ --primary:#06b6d4; --secondary:#2563eb; --muted:#6b7280; }
+        html,body { height:100%; margin:0; font-family:'Poppins',sans-serif; -webkit-print-color-adjust:exact; color-adjust:exact; }
+        body { background:#f3f4f6; }
+        .app-container { padding:2.5rem 1rem; display:flex; justify-content:center; }
+        .ticket-wrapper { width:900px; max-width:100%; }
+        #ticket-body { position:relative; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 12px 40px rgba(2,6,23,0.08); margin:0 auto; }
+        .ticket-header { padding:18px 20px; background:linear-gradient(90deg,var(--primary),var(--secondary)); color:#fff; display:flex; justify-content:space-between; gap:16px; align-items:center; }
+        .ticket-header-left { display:flex; gap:12px; align-items:center; }
+        .logo-pill { width:56px; height:56px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; font-weight:700; background:linear-gradient(135deg,var(--primary),var(--secondary)); box-shadow:0 8px 20px rgba(37,99,235,0.08); }
+        .ticket-body-inner { padding:18px 20px; color:#111; }
+        #ticket-body::before { content: "QUSHAL TOUR & TRAVELS"; position:absolute; left:50%; top:52%; transform:translate(-50%,-50%) rotate(-18deg); font-size:4.5rem; color:rgba(0,0,0,0.02); letter-spacing:6px; pointer-events:none; user-select:none; z-index:0; }
+        .ticket-content > * { position:relative; z-index:1; }
+        .small-note { font-size:0.85rem; color:var(--muted); }
+        @page { size: A4 portrait; margin: 10mm; }
+        @media print {
+            html,body { background:#fff; margin:0; padding:0; }
+            .no-print { display:none !important; }
+            .app-container { padding:0; display:block; }
+            .ticket-wrapper { width:190mm; max-width:190mm; margin:0 auto; }
+            #ticket-body { box-shadow:none !important; border:1px solid #e6e6e6; border-radius:4px !important; margin:0; overflow:visible; }
+            .ticket-header { padding:10px 12px; }
+            .ticket-body-inner { padding:8px 12px; }
+            body { font-size:11px; }
+            .qr-card { box-shadow:none; border:1px solid #ddd; }
+            #ticket-body, #pricing-card, .ticket-body-inner, .grid, .qr-card {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            ul { margin:0; padding-left:16px; }
+            svg { max-width:70mm; max-height:70mm; }
+        }
+        @media (max-width:640px) {
+            .ticket-header { flex-direction:column; align-items:flex-start; gap:8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="ticket-wrapper">
+            <div id="ticket-body" class="ticket-content">
+                <div class="ticket-header">
+                    <div class="ticket-header-left">
+                        <div class="logo-pill" aria-hidden="true">QT</div>
+                        <div>
+                            <div style="font-weight:700; font-size:1.05rem">Qushal Tours and Travels</div>
+                            <div class="small-note" id="ticket-subtitle">Booking Request</div>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);padding:6px 10px;border-radius:8px;">
+                            <i data-lucide="clock" style="width:18px;height:18px;color:#fff"></i>
+                            <div style="font-weight:600;font-size:0.9rem;color:#fff" id="booking-status">PENDING</div>
+                        </div>
+                        <div class="small-note" id="booked-on" style="margin-top:6px;color:rgba(255,255,255,0.9)">—</div>
+                    </div>
+                </div>
+
+                <div class="ticket-body-inner">
+                    <div style="margin-bottom:10px;">
+                        <div id="passenger-name-greeting" style="font-weight:700;font-size:1.05rem;margin-bottom:6px;">Hello, Guest!</div>
+
+                        <div style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:#fff7e6;border:1px solid #fde3a7;border-radius:8px;margin-bottom:8px;">
+                            <i data-lucide="star" style="width:20px;height:20px;color:#d97706;margin-top:2px"></i>
+                            <div style="font-weight:600">Thank you for choosing Qushal Tours and Travels. Safe journey!</div>
+                        </div>
+
+                        <div style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;">
+                            <i data-lucide="phone-call" style="width:20px;height:20px;color:#2563eb;margin-top:3px"></i>
+                            <div style="font-size:0.92rem">
+                                <div style="font-weight:600;color:#1e40af">Next Step: We will contact you shortly.</div>
+                                <div class="small-note" style="margin-top:6px">Your booking is a request and pending confirmation. We will call your primary number (or alternate) to confirm vehicle & finalize price.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start;">
+                        <div style="grid-column:1 / span 2;">
+                            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">From</div>
+                                    <div id="details-from" style="font-weight:700;font-size:1.1rem">—</div>
+                                </div>
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">To</div>
+                                    <div id="details-to" style="font-weight:700;font-size:1.1rem">—</div>
+                                </div>
+
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">Pickup Time</div>
+                                    <div id="details-time-only" style="font-weight:600">—</div>
+                                </div>
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">Pickup Date</div>
+                                    <div id="details-date-only" style="font-weight:600">—</div>
+                                </div>
+
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">Total Passengers</div>
+                                    <div id="details-passengers-count" style="font-weight:600">—</div>
+                                </div>
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">Company Contact</div>
+                                    <div style="font-weight:600;color:var(--primary)">+91 98765 43210</div>
+                                </div>
+
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">Tour</div>
+                                    <div id="details-tour" style="font-weight:600">—</div>
+                                </div>
+                                <div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">Return Date</div>
+                                    <div id="details-return-date" style="font-weight:600">—</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align:center;">
+                            <div class="qr-card" style="display:inline-block;padding:8px;border-radius:10px;">
+                                <svg viewBox="0 0 256 256" width="220" height="220" xmlns="http://www.w3.org/2000/svg" aria-label="QR Code">
+                                    <rect width="256" height="256" fill="#fff"/>
+                                    <path fill="#000" d="M112 112h32v32h-32zm32-32h32v32h-32zm-32 64h32v32h-32zm-32-64h32v32h-32zm0-32h32v32h-32zM80 16h32v32H80zm64 0h32v32h-32zm0 192h32v32h-32zm-64 0h32v32H80zM176 80h32v32h-32zm0 64h32v32h-32zm-32 32h32v32h-32zM16 16h32v32H16zm0 144h32v32H16zm64 32h32v32H80zm-64-64h32v32H16zm0-64h32v32H16zM144 48h32v32h-32zM48 80h32v32H48zm144 0h32v32h-32zM80 176h32v32H80zm96-16h32v32h-32z"/>
+                                </svg>
+                                <div style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Scan to verify booking</div>
+                            </div>
+
+                            <div style="margin-top:8px;font-size:0.78rem;color:var(--muted)">Booking ID</div>
+                            <div id="booking-id" style="font-weight:700;font-size:1.05rem;margin-top:4px;">QT-XXXXX</div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px;">
+                        <div>
+                            <div style="font-weight:700;color:var(--primary);margin-bottom:6px;">Trip & Vehicle Details</div>
+                            <div style="font-size:0.92rem">
+                                <div style="margin-bottom:6px;"><div style="color:var(--muted);font-size:0.78rem">Vehicle Booked</div><div id="details-vehicle" style="font-weight:600">—</div></div>
+                                <div style="margin-bottom:6px;"><div style="color:var(--muted);font-size:0.78rem">Trip Type</div><div id="details-trip-type" style="font-weight:600">—</div></div>
+                                <div style="margin-bottom:6px;"><div style="color:var(--muted);font-size:0.78rem">Full Pickup Address</div><div id="details-pickup-address" style="font-weight:600">—</div></div>
+                                <div><div style="color:var(--muted);font-size:0.78rem">Special Instructions</div><div id="details-instructions" style="font-weight:600">—</div></div>
+
+                                <div style="margin-top:8px;border-top:1px dashed #eee;padding-top:8px;">
+                                    <div style="color:var(--muted);font-size:0.78rem">Hotel Preference</div>
+                                    <div id="details-hotel-pref" style="font-weight:600">—</div>
+                                </div>
+                                <div style="margin-top:6px;">
+                                    <div style="color:var(--muted);font-size:0.78rem">Vehicle Preference</div>
+                                    <div id="details-vehicle-pref" style="font-weight:600">—</div>
+                                </div>
+                                <div style="margin-top:6px;">
+                                    <div style="color:var(--muted);font-size:0.78rem">Payment Method</div>
+                                    <div id="details-payment-method" style="font-weight:600">—</div>
+                                </div>
+                                <div style="margin-top:6px;">
+                                    <div style="color:var(--muted);font-size:0.78rem">Promo Code</div>
+                                    <div id="details-promo" style="font-weight:600">—</div>
+                                </div>
+                                <div style="margin-top:6px;">
+                                    <div style="color:var(--muted);font-size:0.78rem">GST / VAT</div>
+                                    <div id="details-gst" style="font-weight:600">—</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="font-weight:700;color:var(--primary);margin-bottom:6px;">Passenger Contact</div>
+                            <div style="font-size:0.92rem">
+                                <div style="margin-bottom:6px;"><div style="color:var(--muted);font-size:0.78rem">Booking Name</div><div id="details-passenger-name" style="font-weight:600">—</div></div>
+                                <div style="margin-bottom:6px;"><div style="color:var(--muted);font-size:0.78rem">Primary Contact</div><div id="details-phone" style="font-weight:600">—</div></div>
+                                <div style="margin-bottom:6px;"><div style="color:var(--muted);font-size:0.78rem">Email Address</div><div id="details-email" style="font-weight:600">—</div></div>
+                                <div><div style="color:var(--muted);font-size:0.78rem">Alternate Phone</div><div id="details-alt-phone" style="font-weight:600">—</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="pricing-card" style="margin-top:12px;border-radius:8px;">
+                        <div style="padding:10px;background:#fff;border-radius:8px;">
+                            <div style="font-weight:700;color:var(--primary);margin-bottom:6px;">Price Estimate (For Reference)</div>
+                            <div style="background:#fbfbfb;border-radius:8px;padding:8px;">
+                                <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><div style="color:var(--muted)">Base Fare (Estimate)</div><div style="font-weight:600" id="estimate-base">—</div></div>
+                                <div style="display:flex;justify-content:space-between;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:6px;"><div style="color:var(--muted)">Taxes & Tolls (Approx.)</div><div style="font-weight:600" id="estimate-taxes">—</div></div>
+                                <div style="display:flex;justify-content:space-between;"><div style="font-weight:700">Total Estimate</div><div style="font-weight:700;color:var(--primary)" id="estimate-total">—</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-print" style="text-align:center;margin:14px 0;">
+        <button onclick="window.print()" style="padding:10px 14px;background:#374151;color:#fff;border-radius:8px;border:none;margin-right:8px;cursor:pointer;">
+            Print / Save as PDF
+        </button>
+        <a id="back-link" href="../../../gem/services.html" style="padding:10px 14px;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;">Go Back</a>
+    </div>
+
+    <script>
+        (function(){
+            function createIconsSafe(){ if(window.lucide && typeof lucide.createIcons==='function'){ try{ lucide.createIcons(); }catch(e){} } }
+            function safeSet(id, txt){ const el=document.getElementById(id); if(!el) return; el.textContent = txt==null ? '' : String(txt); }
+            function formatTime(t){ try{ if(!t) return t; const p=t.split(':'); if(p.length<2) return t; let hh=parseInt(p[0],10); let mm=p[1].padStart(2,'0').slice(0,2); if(isNaN(hh)||isNaN(parseInt(mm,10))) return t; const am= hh>=12 ? 'PM':'AM'; const dh = hh%12||12; return dh+':'+mm+' '+am; }catch(e){return t;} }
+            function friendlyVehicle(v){ if(!v) return ''; const map = { sedan:'Sedan (4 seater)', suv:'SUV (6-7 seater)', 'tempo-traveller':'Tempo Traveller (12-15 seater)', traveller:'Tempo Traveller', tempo:'Tempo Traveller', minibus:'Mini Bus (20-30 seater)', luxury:'Luxury (Mercedes/Audi)' }; return map[v.toString().toLowerCase()] || v; }
+            function friendlyHotel(v){ if(!v) return ''; const map = { budget:'Budget', standard:'Standard', deluxe:'Deluxe' }; return map[v.toString().toLowerCase()] || v; }
+            function friendlyPayment(v){ if(!v) return ''; const map = { 'pay-later':'Pay at office', upi:'UPI', card:'Card', netbanking:'Netbanking' }; return map[v.toString().toLowerCase()] || v; }
+
+            const params = new URLSearchParams(window.location.search);
+
+            const tourTitles = {
+                jaipur: 'Jaipur',
+                goa: 'Goa',
+                manali: 'Manali',
+                kashmir: 'Kashmir',
+                rajasthan: 'Rajasthan',
+                kerala: 'Kerala'
+            };
+            const tourSlugRaw = (params.get('tour') || params.get('tour-name') || params.get('t') || '').trim();
+            const tourSlug = tourSlugRaw ? decodeURIComponent(tourSlugRaw).toLowerCase() : '';
+
+            function populate(id,param,def){
+                const el=document.getElementById(id); if(!el) return;
+                const raw = params.get(param);
+
+                if(param==='pickup-date' || id==='details-date-only'){
+                    if(raw){ const d=new Date(raw); safeSet(id, isNaN(d.getTime()) ? (def||'[Date]') : d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})); }
+                    else safeSet(id, def||'[Date]');
+                    return;
+                }
+                if(param==='return-date' || id==='details-return-date'){
+                    if(raw){ const d=new Date(raw); safeSet(id, isNaN(d.getTime()) ? (def||'—') : d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})); }
+                    else safeSet(id, def||'—');
+                    return;
+                }
+
+                if(param==='pickup-time' || id==='details-time-only'){ safeSet(id, raw ? formatTime(raw) : (def||'[Time]')); return; }
+
+                if(param==='full-name'){ const v = raw || def || 'Guest'; safeSet('passenger-name-greeting', 'Hello, '+v+'!'); safeSet('details-passenger-name', v); return; }
+
+                if(id==='details-passengers-count'){ safeSet(id, raw||def||'1'); return; }
+
+                if(id==='details-vehicle'){
+                    const v = raw || params.get('vehicle-preference') || params.get('vehicle-type') || def || '';
+                    safeSet(id, friendlyVehicle(v) || def || 'Tempo Traveller');
+                    return;
+                }
+
+                safeSet(id, raw||def||'');
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                populate('details-from','pickup-location','DELHI NCR');
+
+                const explicitDrop = params.get('drop-location');
+                const computedDrop = explicitDrop || (tourSlug && (tourTitles[tourSlug] || tourSlug));
+                safeSet('details-to', computedDrop || '—');
+
+                populate('details-vehicle','vehicle-type','Tempo Traveller');
+
+                const vehiclePref = params.get('vehicle-preference') || params.get('vehicle-type') || '';
+                safeSet('details-vehicle-pref', vehiclePref ? friendlyVehicle(vehiclePref) : (params.get('vehicle-type') ? friendlyVehicle(params.get('vehicle-type')) : '—'));
+
+                populate('details-trip-type','trip-type','One Way');
+                populate('details-time-only','pickup-time');
+                populate('details-date-only','pickup-date');
+                populate('details-return-date','return-date','—');
+                populate('details-passengers-count','passengers','1');
+                populate('details-phone','phone','N/A');
+                populate('details-email','email','N/A');
+                populate('details-alt-phone','alt-phone','Not provided');
+                populate('details-pickup-address','pickup-address','Not provided');
+                populate('details-instructions','instructions','None');
+                populate('passenger-name-greeting','full-name','Guest');
+
+                const tourRaw = params.get('tour-name') || params.get('tour') || params.get('t') || '';
+                const tourDisplay = tourRaw ? decodeURIComponent(tourRaw) : (tourSlug ? (tourTitles[tourSlug] || tourSlug) : '');
+                safeSet('details-tour', tourDisplay || (computedDrop || '—'));
+                safeSet('details-hotel-pref', friendlyHotel(params.get('hotel-preference')) || '—');
+                safeSet('details-payment-method', friendlyPayment(params.get('payment-method')) || '—');
+                safeSet('details-promo', params.get('promo-code') || '—');
+                safeSet('details-gst', params.get('gst-number') || '—');
+
+                const primaryName = params.get('full-name') || params.get('name') || '';
+                if(primaryName) safeSet('passenger-name-greeting', 'Hello, ' + primaryName + '!');
+                const primaryPhone = params.get('phone') || params.get('contact') || '';
+                if(primaryPhone) safeSet('details-phone', primaryPhone);
+
+                if(params.get('estimate-base')) safeSet('estimate-base', params.get('estimate-base'));
+                if(params.get('estimate-taxes')) safeSet('estimate-taxes', params.get('estimate-taxes'));
+                if(params.get('estimate-total')) safeSet('estimate-total', params.get('estimate-total'));
+
+                const bid = document.getElementById('booking-id');
+                if(bid) bid.textContent = 'QT-'+Math.random().toString(36).substring(2,7).toUpperCase();
+
+                const booked = document.getElementById('booked-on');
+                if(booked) booked.textContent = new Date().toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+                const backLink = document.getElementById('back-link');
+                if(backLink){
+                    const from = params.get('from') || '';
+                    if(from === 'tours') backLink.href = '../../../gem/tours_book.html?tour=' + encodeURIComponent(tourSlug || '');
+                    else if(from === 'explore') backLink.href = '../../../gem/explore_tours.html?tour=' + encodeURIComponent(tourSlug || '');
+                    else backLink.href = '../../../gem/services.html';
+                }
+
+                createIconsSafe();
+            });
+
+            window.addEventListener('load', createIconsSafe);
+        })();
+    </script>
+</body>
+</html>
